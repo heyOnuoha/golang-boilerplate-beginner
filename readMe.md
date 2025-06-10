@@ -2,6 +2,8 @@
 
 A production-ready RESTful API for Todo management built with Go. This project serves as a boilerplate and learning resource for Go beginners, demonstrating industry best practices for structuring a Go backend application.
 
+<img src='./docs/pre.png' />
+
 ## Features
 
 - **RESTful API Design**: Clean and consistent API endpoints following REST principles
