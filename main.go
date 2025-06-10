@@ -20,7 +20,7 @@ import (
 	"os/signal"
 )
 
-// @title           Go Todo API
+// @title           Go Boilerplate Beginner Project
 // @version         1.0
 // @description     A RESTful API for Todo management built with Go and PostgreSQL
 // @termsOfService  http://swagger.io/terms/
@@ -72,7 +72,7 @@ func main() {
 	// Root route for basic testing
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Welcome to Todo API"))
+		w.Write([]byte("Welcome to Go Boilerplate Beginner Project"))
 	}).Methods(http.MethodGet)
 
 	corsMiddleware := cors.New(cors.Options{
