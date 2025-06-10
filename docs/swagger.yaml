@@ -173,7 +173,7 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
   termsOfService: http://swagger.io/terms/
-  title: Go Todo API
+  title: Go Boilerplate Beginner Project
   version: "1.0"
 paths:
   /auth/login:

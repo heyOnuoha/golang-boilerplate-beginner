@@ -529,7 +529,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Go Todo API",
+	Title:            "Go Boilerplate Beginner Project",
 	Description:      "A RESTful API for Todo management built with Go and PostgreSQL",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

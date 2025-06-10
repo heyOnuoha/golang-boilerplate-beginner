@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "A RESTful API for Todo management built with Go and PostgreSQL",
-        "title": "Go Todo API",
+        "title": "Go Boilerplate Beginner Project",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
