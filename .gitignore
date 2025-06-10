@@ -1,0 +1,16 @@
+.vscode
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.out
+*.log
+*.swp
+*.tmp
+go.work
+go.work.sum
+.qodo
+tmp/
+
+.env

@@ -1,0 +1,394 @@
+basePath: /api/v1
+definitions:
+  dtos.CreateTodoItemDto:
+    description: Data for creating a new todo item
+    properties:
+      description:
+        description: |-
+          Optional description with details (max 255 characters)
+          @example Milk, eggs, bread, and cheese
+        example: Milk, eggs, bread, and cheese
+        maxLength: 255
+        type: string
+      title:
+        description: |-
+          Title of the todo item (3-255 characters)
+          @example Buy groceries
+        example: Buy groceries
+        type: string
+      userId:
+        description: |-
+          User ID associated with the todo item
+          @example 1
+        example: 1
+        type: integer
+    type: object
+  dtos.CreateTodoNoteDto:
+    description: Data for creating a new note attached to a todo item
+    properties:
+      note:
+        description: |-
+          Content of the note
+          @example Don't forget to check expiration dates
+        example: Don't forget to check expiration dates
+        type: string
+      todoItemId:
+        description: |-
+          ID of the todo item this note belongs to
+          @example 1
+        example: 1
+        type: integer
+    type: object
+  dtos.DeleteTodoItemDto:
+    properties:
+      id:
+        description: |-
+          ID of the todo item to delete
+          @example 1
+        example: 1
+        type: integer
+    type: object
+  dtos.LoginUserDto:
+    description: Login credentials for authenticating a user
+    properties:
+      email:
+        description: |-
+          User's email address
+          @example john.doe@example.com
+        example: john.doe@example.com
+        type: string
+      password:
+        description: |-
+          User's password
+          @example SecureP@ssw0rd
+        example: SecureP@ssw0rd
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dtos.RegisterUserDto:
+    description: Registration data for creating a new user account
+    properties:
+      confirmPassword:
+        description: |-
+          Confirmation of the password
+          @example SecureP@ssw0rd
+        example: SecureP@ssw0rd
+        type: string
+      email:
+        description: |-
+          User's email address
+          @example john.doe@example.com
+        example: john.doe@example.com
+        type: string
+      name:
+        description: |-
+          User's full name
+          @example John Doe
+        example: John Doe
+        type: string
+      password:
+        description: |-
+          User's password (min 8 characters)
+          @example SecureP@ssw0rd
+        example: SecureP@ssw0rd
+        type: string
+    required:
+    - confirmPassword
+    - email
+    - name
+    - password
+    type: object
+  dtos.StructuredResponse:
+    description: Standard response format containing success status, HTTP status code,
+      message, and optional payload
+    properties:
+      message:
+        description: |-
+          Human-readable message
+          @example Operation completed successfully
+        example: Operation completed successfully
+        type: string
+      payload:
+        description: |-
+          Optional payload containing response data
+          @example {"id":1,"name":"Example Item"}
+      status:
+        description: |-
+          HTTP status code
+          @example 200
+        example: 200
+        type: integer
+      success:
+        description: |-
+          Whether the operation was successful
+          @example true
+        example: true
+        type: boolean
+    type: object
+  dtos.UpdateTodoItemDto:
+    description: Data for updating an existing todo item
+    properties:
+      description:
+        description: |-
+          Updated description (max 255 characters)
+          @example Milk, eggs, bread, cheese, and cleaning supplies
+        example: Milk, eggs, bread, cheese, and cleaning supplies
+        maxLength: 255
+        type: string
+      id:
+        description: |-
+          ID of the todo item to update
+          @example 1
+        example: 1
+        type: integer
+      isCompleted:
+        description: |-
+          Updated completion status
+          @example true
+        example: true
+        type: boolean
+      title:
+        description: |-
+          Updated title (3-255 characters)
+          @example Buy groceries and household items
+        example: Buy groceries and household items
+        type: string
+      userId:
+        description: |-
+          User ID associated with the todo item
+          @example 1
+        example: 1
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://www.example.com/support
+  description: A RESTful API for Todo management built with Go and PostgreSQL
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Go Todo API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user with the provided credentials
+      parameters:
+      - description: User login data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LoginUserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User logged in successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      summary: Login a user
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details
+      parameters:
+      - description: User registration data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.RegisterUserDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /todo/create-todo-item:
+    post:
+      consumes:
+      - application/json
+      description: Create a new Todo Item with the provided details
+      parameters:
+      - description: Todo item data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateTodoItemDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo item created successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new Todo Item
+      tags:
+      - todo
+  /todo/create-todo-note:
+    post:
+      consumes:
+      - application/json
+      description: Create a new Todo Note for an existing Todo Item
+      parameters:
+      - description: Todo note data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateTodoNoteDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo note created successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new Todo Note
+      tags:
+      - todo
+  /todo/delete-todo-item:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing Todo Item by ID
+      parameters:
+      - description: Todo item deletion data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.DeleteTodoItemDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo item deleted successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete an existing Todo Item
+      tags:
+      - todo
+  /todo/get-todos:
+    get:
+      consumes:
+      - application/json
+      description: Get all Todo Items from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo items retrieved successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all Todo Items
+      tags:
+      - todo
+  /todo/update-todo-item:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing Todo Item with the provided details
+      parameters:
+      - description: Todo item update data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateTodoItemDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo item updated successfully
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.StructuredResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an existing Todo Item
+      tags:
+      - todo
+securityDefinitions:
+  BearerAuth:
+    description: 'Enter the token with the `Bearer: ` prefix, e.g. ''Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'''
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
