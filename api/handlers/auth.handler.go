@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 	"todo-api/internal/dtos"
 	"todo-api/internal/services"
@@ -37,17 +36,9 @@ func (h *AuthHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 
 	var req dtos.RegisterUserDto
 
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
-			Success: false,
-			Status:  http.StatusBadRequest,
-			Message: err.Error(),
-			Payload: nil,
-		})
+	if !h.DecodeJSONBody(w, r, &req) {
 		return
 	}
-	defer r.Body.Close()
 
 	h.Logger.Debug("Registering user", zap.String("email", req.Email))
 
@@ -82,17 +73,9 @@ func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	var req dtos.LoginUserDto
 
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
-			Success: false,
-			Status:  http.StatusBadRequest,
-			Message: err.Error(),
-			Payload: nil,
-		})
+	if !h.DecodeJSONBody(w, r, &req) {
 		return
 	}
-	defer r.Body.Close()
 
 	h.Logger.Debug("Logging in user", zap.String("email", req.Email))
 
