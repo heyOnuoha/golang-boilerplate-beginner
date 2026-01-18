@@ -22,7 +22,7 @@ func NewTodoRepository(logger *zap.Logger) *TodoRepository {
 		Logger: logger,
 	}
 }
-func (r *TodoRepository) GetTodoItems(ctx context.Context) (dtos.StructuredResponse, error) {
+func (r *TodoRepository) GetTodoItems(ctx context.Context) (dtos.ApiResponse, error) {
 	var todoItems []models.TodoItem
 
 	r.Logger.Info("GetTodoItems request received")
@@ -30,7 +30,7 @@ func (r *TodoRepository) GetTodoItems(ctx context.Context) (dtos.StructuredRespo
 	// Use Preload to load the related Notes for each TodoItem
 	if err := r.DB.Preload("Notes").Preload("User").Find(&todoItems).Error; err != nil {
 		r.Logger.Error("Failed to retrieve todo items", zap.Error(err))
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to retrieve todo items",
@@ -38,7 +38,7 @@ func (r *TodoRepository) GetTodoItems(ctx context.Context) (dtos.StructuredRespo
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Todo items retrieved successfully",
@@ -46,7 +46,7 @@ func (r *TodoRepository) GetTodoItems(ctx context.Context) (dtos.StructuredRespo
 	}, nil
 }
 
-func (r *TodoRepository) CreateTodoItem(ctx context.Context, todoItemDto dtos.CreateTodoItemDto) (dtos.StructuredResponse, error) {
+func (r *TodoRepository) CreateTodoItem(ctx context.Context, todoItemDto dtos.CreateTodoItemDto) (dtos.ApiResponse, error) {
 	// Convert DTO to model
 	todoItem := models.TodoItem{
 		Title:       todoItemDto.Title,
@@ -55,7 +55,7 @@ func (r *TodoRepository) CreateTodoItem(ctx context.Context, todoItemDto dtos.Cr
 	}
 
 	if err := r.DB.Create(&todoItem).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -63,7 +63,7 @@ func (r *TodoRepository) CreateTodoItem(ctx context.Context, todoItemDto dtos.Cr
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Todo item created successfully",
@@ -71,7 +71,7 @@ func (r *TodoRepository) CreateTodoItem(ctx context.Context, todoItemDto dtos.Cr
 	}, nil
 }
 
-func (r *TodoRepository) CreateTodoNote(ctx context.Context, todoNoteDto dtos.CreateTodoNoteDto) (dtos.StructuredResponse, error) {
+func (r *TodoRepository) CreateTodoNote(ctx context.Context, todoNoteDto dtos.CreateTodoNoteDto) (dtos.ApiResponse, error) {
 
 	// Convert DTO to model
 	todoNote := models.TodoNote{
@@ -80,7 +80,7 @@ func (r *TodoRepository) CreateTodoNote(ctx context.Context, todoNoteDto dtos.Cr
 	}
 
 	if err := r.DB.Create(&todoNote).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -88,7 +88,7 @@ func (r *TodoRepository) CreateTodoNote(ctx context.Context, todoNoteDto dtos.Cr
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Todo note created successfully",
@@ -96,12 +96,12 @@ func (r *TodoRepository) CreateTodoNote(ctx context.Context, todoNoteDto dtos.Cr
 	}, nil
 }
 
-func (r *TodoRepository) UpdateTodoItem(ctx context.Context, todoItemDto dtos.UpdateTodoItemDto) (dtos.StructuredResponse, error) {
+func (r *TodoRepository) UpdateTodoItem(ctx context.Context, todoItemDto dtos.UpdateTodoItemDto) (dtos.ApiResponse, error) {
 
 	var todoItem models.TodoItem
 
 	if err := r.DB.First(&todoItem, todoItemDto.ID).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
 			Message: "Todo item not found",
@@ -114,7 +114,7 @@ func (r *TodoRepository) UpdateTodoItem(ctx context.Context, todoItemDto dtos.Up
 	todoItem.IsCompleted = todoItemDto.IsCompleted
 
 	if err := r.DB.Save(&todoItem).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -122,7 +122,7 @@ func (r *TodoRepository) UpdateTodoItem(ctx context.Context, todoItemDto dtos.Up
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Todo item updated successfully",
@@ -130,11 +130,11 @@ func (r *TodoRepository) UpdateTodoItem(ctx context.Context, todoItemDto dtos.Up
 	}, nil
 }
 
-func (r *TodoRepository) DeleteTodoItem(ctx context.Context, todoItemDto dtos.DeleteTodoItemDto) (dtos.StructuredResponse, error) {
+func (r *TodoRepository) DeleteTodoItem(ctx context.Context, todoItemDto dtos.DeleteTodoItemDto) (dtos.ApiResponse, error) {
 	var todoItem models.TodoItem
 
 	if err := r.DB.First(&todoItem, todoItemDto.ID).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
 			Message: "Todo item not found",
@@ -143,7 +143,7 @@ func (r *TodoRepository) DeleteTodoItem(ctx context.Context, todoItemDto dtos.De
 	}
 
 	if err := r.DB.Delete(&todoItem).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -151,7 +151,7 @@ func (r *TodoRepository) DeleteTodoItem(ctx context.Context, todoItemDto dtos.De
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Todo item deleted successfully",

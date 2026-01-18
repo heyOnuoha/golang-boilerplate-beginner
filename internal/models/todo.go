@@ -10,7 +10,7 @@ type TodoItem struct {
 	CreatedAt   time.Time  `gorm:"column:createdAt" json:"createdAt"`
 	UpdatedAt   time.Time  `gorm:"column:updatedAt" json:"updatedAt"`
 	Notes       []TodoNote `gorm:"foreignKey:TodoItemID;constraint:OnDelete:CASCADE" json:"notes,omitempty"`
-	UserID      uint       `gorm:"column:user_id" json:"userId" gorm:"not null"`
+	UserID      uint       `gorm:"column:user_id; not null" json:"userId"`
 	User        User       `gorm:"foreignKey:UserID;references:ID" json:"user"`
 }
 

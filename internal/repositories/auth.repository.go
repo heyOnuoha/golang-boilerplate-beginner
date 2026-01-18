@@ -23,13 +23,13 @@ func NewAuthRepository(logger *zap.Logger) *AuthRepository {
 	return &AuthRepository{DB: database.GetDB(), Logger: logger}
 }
 
-func (r *AuthRepository) RegisterUser(ctx context.Context, registerUserDto dtos.RegisterUserDto) (dtos.StructuredResponse, error) {
+func (r *AuthRepository) RegisterUser(ctx context.Context, registerUserDto dtos.RegisterUserDto) (dtos.ApiResponse, error) {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerUserDto.Password), bcrypt.DefaultCost)
 
 	if err != nil {
 		r.Logger.Error("Failed to hash password", zap.Error(err))
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to register user",
@@ -44,7 +44,7 @@ func (r *AuthRepository) RegisterUser(ctx context.Context, registerUserDto dtos.
 	}
 
 	if err := r.DB.Create(&user).Error; err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to register user",
@@ -52,7 +52,7 @@ func (r *AuthRepository) RegisterUser(ctx context.Context, registerUserDto dtos.
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "User registered successfully",
@@ -64,13 +64,13 @@ func (r *AuthRepository) RegisterUser(ctx context.Context, registerUserDto dtos.
 	}, nil
 }
 
-func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginUserDto) (dtos.StructuredResponse, error) {
+func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginUserDto) (dtos.ApiResponse, error) {
 	var user models.User
 
 	// Find the user by email
 	if err := r.DB.Where("email = ?", loginUserDto.Email).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return dtos.StructuredResponse{
+			return dtos.ApiResponse{
 				Success: false,
 				Status:  http.StatusUnauthorized,
 				Message: "Invalid email or password",
@@ -78,7 +78,7 @@ func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginU
 			}, nil
 		}
 		r.Logger.Error("Failed to find user", zap.Error(err))
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to login",
@@ -89,7 +89,7 @@ func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginU
 	// Compare the provided password with the stored hash
 	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(loginUserDto.Password))
 	if err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusUnauthorized,
 			Message: "Invalid email or password",
@@ -101,7 +101,7 @@ func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginU
 	token, err := utils.GenerateToken(user)
 	if err != nil {
 		r.Logger.Error("Failed to generate token", zap.Error(err))
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to login",
@@ -109,7 +109,7 @@ func (r *AuthRepository) LoginUser(ctx context.Context, loginUserDto dtos.LoginU
 		}, err
 	}
 
-	return dtos.StructuredResponse{
+	return dtos.ApiResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Login successful",

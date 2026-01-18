@@ -55,14 +55,14 @@ func AuthMiddleware(logger *zap.Logger) func(next http.Handler) http.Handler {
 func respondWithError(w http.ResponseWriter, message string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
-	
-	response := dtos.StructuredResponse{
+
+	response := dtos.ApiResponse{
 		Success: false,
 		Status:  statusCode,
 		Message: message,
 		Payload: nil,
 	}
-	
+
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		// If encoding fails, log the error and write a simple error message
 		w.WriteHeader(http.StatusInternalServerError)

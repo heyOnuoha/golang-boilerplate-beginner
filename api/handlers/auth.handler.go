@@ -28,8 +28,8 @@ func NewAuthHandler(logger *zap.Logger) *AuthHandler {
 // @Accept json
 // @Produce json
 // @Param user body dtos.RegisterUserDto true "User registration data"
-// @Success 201 {object} dtos.StructuredResponse "User registered successfully"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 201 {object} dtos.ApiResponse "User registered successfully"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /auth/register [post]
 func (h *AuthHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("Register request received")
@@ -46,7 +46,7 @@ func (h *AuthHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to register user", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -64,9 +64,9 @@ func (h *AuthHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param user body dtos.LoginUserDto true "User login data"
-// @Success 200 {object} dtos.StructuredResponse "User logged in successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Invalid credentials"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "User logged in successfully"
+// @Failure 401 {object} dtos.ApiResponse "Invalid credentials"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /auth/login [post]
 func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("Login request received")
@@ -83,7 +83,7 @@ func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to login user", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),

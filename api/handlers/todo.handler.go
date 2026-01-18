@@ -30,9 +30,9 @@ func NewTodoHandler(logger *zap.Logger) *TodoHandler {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} dtos.StructuredResponse "Todo items retrieved successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Unauthorized"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "Todo items retrieved successfully"
+// @Failure 401 {object} dtos.ApiResponse "Unauthorized"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /todo/get-todos [get]
 func (h *TodoHandler) GetTodoItems(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("GetTodoItems request received")
@@ -41,7 +41,7 @@ func (h *TodoHandler) GetTodoItems(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to get todo items", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -64,9 +64,9 @@ func (h *TodoHandler) GetTodoItems(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security BearerAuth
 // @Param todo body dtos.CreateTodoItemDto true "Todo item data"
-// @Success 200 {object} dtos.StructuredResponse "Todo item created successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Unauthorized"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "Todo item created successfully"
+// @Failure 401 {object} dtos.ApiResponse "Unauthorized"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /todo/create-todo-item [post]
 func (h *TodoHandler) CreateTodoItem(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("CreateTodoItem request received")
@@ -75,7 +75,7 @@ func (h *TodoHandler) CreateTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
@@ -88,7 +88,7 @@ func (h *TodoHandler) CreateTodoItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := utils.GetUserIDFromContext(r.Context())
 	if err != nil {
 		h.Logger.Error("Failed to get user ID from context", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -104,7 +104,7 @@ func (h *TodoHandler) CreateTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to create todo item", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -124,9 +124,9 @@ func (h *TodoHandler) CreateTodoItem(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security BearerAuth
 // @Param todo body dtos.CreateTodoNoteDto true "Todo note data"
-// @Success 200 {object} dtos.StructuredResponse "Todo note created successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Unauthorized"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "Todo note created successfully"
+// @Failure 401 {object} dtos.ApiResponse "Unauthorized"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /todo/create-todo-note [post]
 func (h *TodoHandler) CreateTodoNote(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("CreateTodoNote request received")
@@ -135,7 +135,7 @@ func (h *TodoHandler) CreateTodoNote(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
@@ -150,7 +150,7 @@ func (h *TodoHandler) CreateTodoNote(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to create todo note", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -170,9 +170,9 @@ func (h *TodoHandler) CreateTodoNote(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security BearerAuth
 // @Param todo body dtos.UpdateTodoItemDto true "Todo item update data"
-// @Success 200 {object} dtos.StructuredResponse "Todo item updated successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Unauthorized"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "Todo item updated successfully"
+// @Failure 401 {object} dtos.ApiResponse "Unauthorized"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /todo/update-todo-item [put]
 func (h *TodoHandler) UpdateTodoItem(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("UpdateTodoItem request received")
@@ -181,7 +181,7 @@ func (h *TodoHandler) UpdateTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
@@ -195,7 +195,7 @@ func (h *TodoHandler) UpdateTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to get user ID from context", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -211,7 +211,7 @@ func (h *TodoHandler) UpdateTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to update todo item", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
@@ -231,9 +231,9 @@ func (h *TodoHandler) UpdateTodoItem(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security BearerAuth
 // @Param todo body dtos.DeleteTodoItemDto true "Todo item deletion data"
-// @Success 200 {object} dtos.StructuredResponse "Todo item deleted successfully"
-// @Failure 401 {object} dtos.StructuredResponse "Unauthorized"
-// @Failure 500 {object} dtos.StructuredResponse "Internal server error"
+// @Success 200 {object} dtos.ApiResponse "Todo item deleted successfully"
+// @Failure 401 {object} dtos.ApiResponse "Unauthorized"
+// @Failure 500 {object} dtos.ApiResponse "Internal server error"
 // @Router /todo/delete-todo-item [delete]
 func (h *TodoHandler) DeleteTodoItem(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Info("DeleteTodoItem request received")
@@ -242,7 +242,7 @@ func (h *TodoHandler) DeleteTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
@@ -257,7 +257,7 @@ func (h *TodoHandler) DeleteTodoItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.Logger.Error("Failed to delete todo item", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),

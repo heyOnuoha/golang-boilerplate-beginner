@@ -20,10 +20,10 @@ func NewAuthService(logger *zap.Logger) *AuthService {
 	}
 }
 
-func (s *AuthService) RegisterUser(ctx context.Context, registerUserDto dtos.RegisterUserDto) (dtos.StructuredResponse, error) {
+func (s *AuthService) RegisterUser(ctx context.Context, registerUserDto dtos.RegisterUserDto) (dtos.ApiResponse, error) {
 	return s.repo.RegisterUser(ctx, registerUserDto)
 }
 
-func (s *AuthService) LoginUser(ctx context.Context, loginUserDto dtos.LoginUserDto) (dtos.StructuredResponse, error) {
+func (s *AuthService) LoginUser(ctx context.Context, loginUserDto dtos.LoginUserDto) (dtos.ApiResponse, error) {
 	return s.repo.LoginUser(ctx, loginUserDto)
 }

@@ -52,19 +52,19 @@ const docTemplate = `{
                     "200": {
                         "description": "User logged in successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -98,13 +98,13 @@ const docTemplate = `{
                     "201": {
                         "description": "User registered successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -143,19 +143,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Todo item created successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -194,19 +194,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Todo note created successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -245,19 +245,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Todo item deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -285,19 +285,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Todo items retrieved successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -336,19 +336,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Todo item updated successfully",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StructuredResponse"
+                            "$ref": "#/definitions/dtos.ApiResponse"
                         }
                     }
                 }
@@ -456,7 +456,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.StructuredResponse": {
+        "dtos.ApiResponse": {
             "description": "Standard response format containing success status, HTTP status code, message, and optional payload",
             "type": "object",
             "properties": {

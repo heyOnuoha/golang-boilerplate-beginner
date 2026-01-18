@@ -18,10 +18,10 @@ func NewTodoService(logger *zap.Logger) *TodoService {
 	}
 }
 
-func (s *TodoService) GetTodoItems(ctx context.Context) (dtos.StructuredResponse, error) {
+func (s *TodoService) GetTodoItems(ctx context.Context) (dtos.ApiResponse, error) {
 	response, err := s.todoRepository.GetTodoItems(ctx)
 	if err != nil {
-		return dtos.StructuredResponse{
+		return dtos.ApiResponse{
 			Success: false,
 			Status:  500,
 			Message: "Failed to retrieve todo items",
@@ -31,19 +31,19 @@ func (s *TodoService) GetTodoItems(ctx context.Context) (dtos.StructuredResponse
 	return response, nil
 }
 
-func (s *TodoService) CreateTodoItem(ctx context.Context, todoItem dtos.CreateTodoItemDto) (dtos.StructuredResponse, error) {
+func (s *TodoService) CreateTodoItem(ctx context.Context, todoItem dtos.CreateTodoItemDto) (dtos.ApiResponse, error) {
 
 	return s.todoRepository.CreateTodoItem(ctx, todoItem)
 }
 
-func (s *TodoService) CreateTodoNote(ctx context.Context, todoNoteDto dtos.CreateTodoNoteDto) (dtos.StructuredResponse, error) {
+func (s *TodoService) CreateTodoNote(ctx context.Context, todoNoteDto dtos.CreateTodoNoteDto) (dtos.ApiResponse, error) {
 	return s.todoRepository.CreateTodoNote(ctx, todoNoteDto)
 }
 
-func (s *TodoService) UpdateTodoItem(ctx context.Context, todoItemDto dtos.UpdateTodoItemDto) (dtos.StructuredResponse, error) {
+func (s *TodoService) UpdateTodoItem(ctx context.Context, todoItemDto dtos.UpdateTodoItemDto) (dtos.ApiResponse, error) {
 	return s.todoRepository.UpdateTodoItem(ctx, todoItemDto)
 }
 
-func (s *TodoService) DeleteTodoItem(ctx context.Context, todoItemDto dtos.DeleteTodoItemDto) (dtos.StructuredResponse, error) {
+func (s *TodoService) DeleteTodoItem(ctx context.Context, todoItemDto dtos.DeleteTodoItemDto) (dtos.ApiResponse, error) {
 	return s.todoRepository.DeleteTodoItem(ctx, todoItemDto)
 }

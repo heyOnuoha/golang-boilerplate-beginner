@@ -27,14 +27,12 @@ func InitDatabase(config *config.DatabaseConfig) error {
 		return err
 	}
 
-	posgresDB, err := DB.DB()
+	if posgresDB, err := DB.DB(); err == nil {
+		posgresDB.SetMaxIdleConns(10)
+		posgresDB.SetMaxOpenConns(100)
 
-	if err != nil {
 		return err
 	}
-
-	posgresDB.SetMaxIdleConns(10)
-	posgresDB.SetMaxOpenConns(100)
 
 	return nil
 }

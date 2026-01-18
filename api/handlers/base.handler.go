@@ -12,7 +12,7 @@ type BaseHandler struct {
 	Logger *zap.Logger
 }
 
-func (h *BaseHandler) ReturnJSONResponse(w http.ResponseWriter, response dtos.StructuredResponse) {
+func (h *BaseHandler) ReturnJSONResponse(w http.ResponseWriter, response dtos.ApiResponse) {
 	responseJSON, err := json.Marshal(response)
 
 	if err != nil {
@@ -30,7 +30,7 @@ func (h *BaseHandler) ReturnJSONResponse(w http.ResponseWriter, response dtos.St
 func (h *BaseHandler) DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) bool {
 	if err := json.NewDecoder(r.Body).Decode(dst); err != nil {
 		h.Logger.Error("Failed to decode request body", zap.Error(err))
-		h.ReturnJSONResponse(w, dtos.StructuredResponse{
+		h.ReturnJSONResponse(w, dtos.ApiResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
